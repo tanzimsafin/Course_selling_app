@@ -8,20 +8,20 @@ const Schema=mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
 const UserSchema=new Schema({
-    firstName:string,
+    firstName:String,
     lastName:String,
     email:{type:String,unique:true},
     password:String
 });
 
 const adminSchema=new Schema({
-    firstName:string,
+    firstName:String,
     lastName:String,
     email:{type:String,unique:true},
     password:String
 });
 
-const courseSchema=new schema({
+const courseSchema=new Schema({
     title:String,
     description:String,
     Price:Number,
@@ -29,7 +29,7 @@ const courseSchema=new schema({
     creatorId:ObjectId
 });
 
-const parchaseSchema=new schema({
+const parchaseSchema=new Schema({
     userId:ObjectId,
     courseId:ObjectId
 });
