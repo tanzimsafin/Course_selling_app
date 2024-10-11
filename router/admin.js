@@ -4,7 +4,8 @@ const jwt=require('jsonwebtoken');
 const Router = express.Router;
 const adminRouter = Router();
 const {JWT_SECRET_Admin}=require('../config');
-
+const {adminMiddleware}=require('../Middleware/admin');
+const {courseModel}=require('../db');
 //bcrypt for hashing password
 const bcrypt=require('bcrypt');
 
@@ -78,9 +79,22 @@ adminRouter.post('/signin',async function(req,res){
 });
 
 //create_course
-adminRouter.post('/create_course',function(req,res){
+adminRouter.post('/create_course',adminMiddleware,async function(req,res){
+    const title=req.body.title;
+    const description=req.body.description;
+    const Price=req.body.price;
+    const imgUrl=req.body.imgUrl;
+    const adminId=req.userId;
+    const course= await courseModel.create({
+        title:title,
+        description:description,
+        Price:Price,
+        imgUrl:imgUrl,
+        creatorId:adminId
+    });
     res.json({
-       message:"Admin create a course!"
+       message:"Admin Successfully create a course!",
+       courseId:course._id
     });
 });
 
