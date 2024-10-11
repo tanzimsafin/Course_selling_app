@@ -99,10 +99,23 @@ adminRouter.post('/create_course',adminMiddleware,async function(req,res){
 });
 
 //delete_course
-adminRouter.delete('/delete_course',function(req,res){
-    res.json({
-       message:"Admin create a course!"
-    });
+adminRouter.delete('/delete_course',adminMiddleware,async function(req,res){
+    const adminId=req.userId;//check letter
+    const courseId=req.body.courseId;
+    try{
+        await courseModel.deleteOne({
+            _id: courseId,
+            creatorId: adminId
+        });
+        res.json({
+           message:"Admin delete a Course!",
+           courseId:courseId,
+           creatorId:adminId
+        });
+    }catch(err){
+        console.log(`Admin Already Deleted this course`);
+    }
+    
 });
 
 //add_course_content
@@ -113,7 +126,23 @@ adminRouter.post('/add_course_content',function(req,res){
 });
 
 //update_course
-adminRouter.put('/Update_course',function(req,res){
+adminRouter.put('/Update_course',adminMiddleware,async function(req,res){
+    const title=req.body.title;
+    const description=req.body.description;
+    const Price=req.body.price;
+    const imgUrl=req.body.imgUrl;
+    const adminId=req.userId;
+    const course = await courseModel.findOneAndUpdate(
+        { creatorId: adminId, _id: req.body.courseId },//filter
+        {
+            title: title,
+            description: description,
+            Price: Price,//update option
+            imgUrl: imgUrl
+        },
+        { new: true } //question
+    );
+
     res.json({
        message:"Admin Update  a course!"
     });
