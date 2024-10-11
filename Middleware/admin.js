@@ -1,5 +1,6 @@
 const express=require('express');
 const jwt=require('jsonwebtoken');
+const {JWT_SECRET_Admin}=require('../config');
 function adminMiddleware(req,res,next){
     const token=req.headers.token;
     const decoded=jwt.verify(token,process.env.JWT_SECRET_Admin);

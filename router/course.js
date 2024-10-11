@@ -1,14 +1,15 @@
 const express=require('express');
 const Router=express.Router;
 const courseRouter=Router();
-
+const {courseModel}=require('../db');
 //see all courses
-courseRouter.get('/app/v1/user/all_courses',function(req,res){
+courseRouter.get('/all_courses',async function(req,res){
+    const all_courses=await courseModel.find({});
     res.json({
-       message:"Here is all!"
+       message:"Here is all courses!",
+       all_courses:all_courses
     });
 });
-
 module.exports={
     courseRouter:courseRouter
 };

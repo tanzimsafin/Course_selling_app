@@ -34,7 +34,7 @@ adminRouter.post('/signup',async function(req,res){
     try{
       const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
       const hashedpassword = await bcrypt.hash(password, saltRounds); //make it primisified
-      console.log(hashedpassword);
+    //   console.log(hashedpassword);
       await adminModel.create({
          firstName,
          lastName,
@@ -63,10 +63,10 @@ adminRouter.post('/signin',async function(req,res){
         const Hashedpassword=UserExist.password;
         const match = await bcrypt.compare(password,Hashedpassword);
         if(match){
-            const token=jwt.sign({ id: UserId }, process.env.JWT_SECRET_Admin);
+            const token=jwt.sign({ id: UserId },JWT_SECRET_Admin);
             //error detected as user id is An object parameter
             res.json({
-                message:"User is signed In!",
+                message:"Admin is signed In!",
                 token:token
              });
         }
@@ -117,7 +117,6 @@ adminRouter.delete('/delete_course',adminMiddleware,async function(req,res){
     }
     
 });
-
 //add_course_content
 adminRouter.post('/add_course_content',function(req,res){
     res.json({
